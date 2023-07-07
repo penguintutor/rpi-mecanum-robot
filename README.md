@@ -36,6 +36,11 @@ The programs can be started by adding the following entry to /etc/xdg/lxsession/
     lxterminal -e /opt/mecanum/robot.sh
 
 
+## Pygame Zero version
+There is also a version designed for Pygame Zero. This includes a distance sensor and stops forward motion if a crash is imminent. This is currently under development. To run use
+    pgzrun mecanum-pgz.py
+
+
 ## More information 
 
 For more information see [Raspberry Pi Mecanum Robot on Penguintutor](http://www.penguintutor.com/projects/robot)
