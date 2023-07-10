@@ -2,7 +2,7 @@
 Raspberry Pi powered mecanum robot
 
 ## Requirements
-Software to control a 4-wheel mecanum robot. Based on a Raspberry Pi (such as Raspberry Pi Pico W) with two pairs of TB6612FNG motor drivers. Uses keypad controls, also compatible with AntiMicroX or QJoyPad for gamepad control.
+Software to control a 4-wheel mecanum robot. Based on a Raspberry Pi (such as Raspberry Pi Pico W) with two pairs of TB6612FNG motor drivers. Uses keypad controls, also compatible with AntiMicroX or QJoyPad for gamepad control. A graphical version using Pygame Zero is also included.
 
 ## Install and run
 Download the file mecanum.py. It is recommended that this is installed in /opt/mecanum
@@ -37,7 +37,8 @@ The programs can be started by adding the following entry to /etc/xdg/lxsession/
 
 
 ## Pygame Zero version
-There is also a version designed for Pygame Zero. This includes a distance sensor and stops forward motion if a crash is imminent. This is currently under development. To run use
+There is also a version designed for Pygame Zero. This includes a distance sensor and stops forward motion if a crash is imminent. The interface allows for mouse clicks on the direction arrows or the same keyboard control as the command line version. This also needs pigpiod to be running. To run use
+    sudo pigpiod
     pgzrun mecanum-pgz.py
 
 

@@ -20,14 +20,13 @@ motors = [
     ]
 
 pwm_out = PWMOutputDevice (pwm_pin)
-
 dist_sensor = DistanceSensor(echo=6, trigger=5)
 
 arrows = [
-    Actor("arrow.png", center=(500,300)),
-    Actor("arrow.png", center=(400,200)),
-    Actor("arrow.png", center=(300,300)),
-    Actor("arrow.png", center=(400,400))
+    Actor("arrow.png", center=(500,300)),   # Right
+    Actor("arrow.png", center=(400,200)),   # Up
+    Actor("arrow.png", center=(300,300)),   # Left
+    Actor("arrow.png", center=(400,400))    # Down
     ]
     
 arrows[1].angle = 90
@@ -83,7 +82,6 @@ current_direction = (0, 0, 0, 0)
 speed = 50
 pwm_out.value = speed/100
 
-
 def draw():
     screen.fill((192,192,192))
     for arrow in arrows:
@@ -100,11 +98,10 @@ def update():
             if ((current_direction[0] == 1 and current_direction[1] != -1) or
                 (current_direction[1] == 1 and current_direction[0] != -1)):
                 print ("Warning - crash imminent")
-                current_direction = (0, 0, 0, 0)
-                motors_stop()
+                # Force stop using stop key number (5)
+                set_direction (direction[keys.K_5])
     except:
         print ("No distance sensor detected")
-
 
 def on_key_down(key):
     global speed, current_direction
@@ -122,14 +119,39 @@ def on_key_down(key):
         pwm_out.value = speed/100
         print ("Speed : "+str(speed))
     elif (key in direction.keys()) :
-        current_direction = direction[key]
-        for i in range (0, 4):
-            if direction[key][i] == -1:
-                motors[i].backward()
-            elif direction[key][i] == 1:
-                motors[i].forward()
-            else:
-                motors[i].stop()
+        set_direction(direction[key])
+                
+def set_direction(direction):
+    global current_direction
+    current_direction = direction
+    for i in range (0, 4):
+        if direction[i] == -1:
+            motors[i].backward()
+        elif direction[i] == 1:
+            motors[i].forward()
+        else:
+            motors[i].stop()    
+                
+def on_mouse_down(pos, button):
+            if button != mouse.LEFT:    # Only look for left click
+                return
+            for arrow_num, arrow in enumerate(arrows):
+                if (arrow.collidepoint(pos)):
+                    # translate mouse click to current direction
+                    if (arrow_num == 0):
+                        set_direction (direction[keys.KP6])
+                        return
+                    elif (arrow_num == 1): 
+                        set_direction (direction[keys.KP8])
+                        return
+                    elif (arrow_num == 2):
+                        set_direction (direction[keys.KP4])
+                        return
+                    elif (arrow_num == 3):
+                        set_direction (direction[keys.KP2])
+                        return
+            set_direction (direction[keys.KP5]) # Click anywhere else stop
+                
 
 def motors_stop():
     for i in range (0, 4):
